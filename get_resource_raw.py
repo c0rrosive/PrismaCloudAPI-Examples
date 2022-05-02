@@ -28,14 +28,12 @@ def get_absolute_time():
     response = requests.request('POST', url, headers=headers, json=payload)
     print(response.text)
 
-def get_detailed_alert(alert_id):
-    endpoint = "/alert/"
+ def get_alert_id_test(alert_id):
+    endpoint = "/v2/alert"
     url = build_url(endpoint)
-    print(alert_id)
-    request_url = url + alert_id + "?detailed=true"
     headers = login_prisma()
-    print(request_url)
-    response = requests.request("GET", request_url, headers=headers)
+    querystring = {"timeType":"relative","timeAmount":"1","timeUnit":"year","detailed":"True","alert.id": alert_id }
+    response = requests.request("GET", url, headers=headers, params=querystring)
     tags = (response.json()['resource']['data']['tags'])
     print(tags)
     rrn = (response.json()['resource']['rrn'])
